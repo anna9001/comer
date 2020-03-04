@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-/mybatis.org/DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="togeBoardMapper">
+
+<insert id="insertData" parameterType="com.exe.dto.TogeBoardDTO">
+	insert into together(no,subject,place,eventdate,content,id,created,fileName,hitcount,participant) values(#{no},#{subject},#{place},to_char(to_date(#{eventDate},'mm/dd/yyyy'),'yyyy/mm/dd'),#{content},#{id},to_char(sysdate,'yyyy/mm/dd'),#{fileName},0,0)
+</insert>
+
+<select id="maxNo" resultType="int" >
+	select nvl(max(no),0) from together
+</select>
+
+<select id="dataCount" resultType="int" >
+	select nvl(count(*),0) from together
+</select>
+
+<update id="updateHitCount" parameterType="com.exe.dto.TogeBoardDTO"> 
+	update together set hitcount = hitcount+1 where no=${no}
+</update>
+
+<update id="updatepParicipant" parameterType="map"> 
+	update together set participant = participant+1 where no=${no}
+</update>
+
+<update id="updateData" parameterType="com.exe.dto.TogeBoardDTO">
+	update together set subject=#{subject},place=#{place},
+	content=#{content},fileName=#{fileName} where no=#{no}
+</update>
+
+<select id="selectAll" parameterType="map" resultType="com.exe.dto.TogeBoardDTO">
+<![CDATA[
+	select * from (
+	select rownum rnum, data.* from(
+	select no,subject,to_char(eventdate,'yyyy/mm/dd') eventdate,id,to_char(created,'yyyy/mm/dd') created,hitcount,participant from together order by no desc) data)
+	where rnum>=#{start} and rnum<=#{end}
+]]>
+</select>
+
+<select id="selectOne" parameterType="map" resultType="com.exe.dto.TogeBoardDTO">
+	select no,subject,content,place,to_char(eventdate,'yyyy/mm/dd') eventdate,id,to_char(created,'yyyy/mm/dd') created,hitcount,participant,fileName from together where no=${no}
+</select>
+
+<insert id="addParticipant" parameterType="map">
+	insert into togeParticipate (no,id) values(#{no},#{id})
+</insert>
+
+<select id="checkParticipant" parameterType="map" resultType="com.exe.dto.TogeBoardDTO">
+	select * from togeParticipate where id=#{id} and no=#{no}
+</select>
+
+<delete id="deleteData" parameterType="map">
+	delete together where no=#{no}
+</delete>
+
+
+</mapper>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-/mybatis.org/DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="restaurantMapper">
+<select id="maxNum" resultType="int">
+ select nvl(max(no),0) from restaurant
+</select>
+
+<select id="dataCount" resultType="int">
+ select nvl(count(*),0) from restaurant
+</select>
+
+<insert id="insertData" parameterType="com.exe.dto.RestaurantDTO">
+	insert into restaurant(no,name,tel,address1,address2,address3,category,content,fileName) values(#{no},#{name},#{tel},#{address1},#{address2},#{address3},#{category},#{content},#{fileName})	
+</insert>
+
+<update id="updateData" parameterType="com.exe.dto.RestaurantDTO">
+	update restaurant set 
+	name=#{name},tel=#{tel},address1=#{address1},address2=#{address2},address3=#{address3},category=#{category},content=#{content},fileName=#{fileName} where no=#{no}
+</update>
+
+<delete id="deleteDate" parameterType="map">
+	delete restaurant where no=#{no}
+</delete>
+
+<select id="getList" parameterType="map" resultType="com.exe.dto.RestaurantDTO">
+	<![CDATA[
+		select * from (
+		select rownum rnum, data.* from (
+		select no,name,tel,address1,address2,category from restaurant
+		where  category like '%'|| #{category} ||'%' and address1 like '%'|| #{address1} ||'%'
+		order by no desc) data)	where rnum>=#{start} and rnum<=#{end} 	
+	]]>
+</select>
+
+<select id="getOneData" parameterType="map" resultType="com.exe.dto.RestaurantDTO">
+	select no,name,tel,address1,address2,address3,category,content,filename from restaurant where no=#{no}
+</select>
+</mapper>

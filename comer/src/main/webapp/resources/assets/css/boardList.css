@@ -1,0 +1,60 @@
+table{
+width:100%;
+padding:20px;
+border-collapse: separate;
+border-spacing: 0 20px;
+}
+tr{
+padding:15px;
+}
+td{
+text-align:center;
+}
+#subLine{
+border-bottom: 1px solid;
+border-collapse: separate;
+border-spacing: 0 10px;
+}
+
+#number{
+width:4%;
+font-weight:bold;
+font-size:15px;
+}  
+
+#subject{
+width:48%;
+font-weight:bold;
+font-size:15px;
+}
+#id{
+width:18%;
+font-weight:bold;
+font-size:15px;
+}
+#created{
+width:8%;
+font-weight:bold;
+font-size:15px;
+}
+#hitcount{
+width:8%;
+font-weight:bold;
+font-size:15px;
+}
+#participant{
+width:13%;
+font-weight:bold;
+font-size:15px;
+}  
+
+#name{
+width:40%;
+font-weight:bold;
+font-size:15px;
+}
+#tel{
+width:20%;
+font-weight:bold;
+font-size:15px;
+}

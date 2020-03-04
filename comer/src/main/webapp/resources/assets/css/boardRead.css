@@ -1,0 +1,45 @@
+table {
+	width: 100%;
+	padding: 20px;
+}
+
+.contentTable {
+	width: 60%;
+	margin: 0;
+	padding: 0;
+	float: left;
+}
+
+.calendarTable {
+	width: 38%;
+	margin: 0;
+	padding: 0;
+	float: right;
+	height:400px;
+}
+
+td {
+	text-align: center;
+}
+
+#sub{
+font-size:15px;
+font-weight:bold;
+}
+#subLine{
+border-bottom: 1px solid;
+border-collapse: separate;
+border-spacing: 0 10px;
+}
+#content {
+	width: 100%;
+}
+#calSub{
+margin:2%;
+height:15%;
+text-align:center;
+}
+#calbody{
+margin:0;
+height:60%;
+}

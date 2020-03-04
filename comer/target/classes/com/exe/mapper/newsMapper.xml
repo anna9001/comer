@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-/mybatis.org/DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="newsMapper">
+
+<select id="dataCount" resultType="int" >
+	select nvl(count(*),0) from news
+</select>
+
+<insert id="insertData" parameterType="com.exe.dto.NewsDTO">
+	insert into news(no,subject,content,id,created,fileName,hitcount) values(#{no},#{subject},#{content},#{id},to_char(sysdate,'yyyy/mm/dd'),#{fileName},0)
+</insert>
+
+<update id="updateData" parameterType="com.exe.dto.NewsDTO">
+	update news set subject=#{subject},content=#{content},fileName=#{fileName,jdbcType=VARCHAR} where no=#{no}
+</update>
+
+<select id="maxNo" resultType="int" >
+	select nvl(max(no),0) from news
+</select>
+
+<update id="updateHitCount" parameterType="com.exe.dto.NewsDTO"> 
+	update news set hitcount = hitcount+1 where no=${no}
+</update>
+
+<select id="selectAll" parameterType="map" resultType="com.exe.dto.NewsDTO">
+<![CDATA[
+	select * from(
+	select rownum rnum, data.* from(
+	select no,subject,id,created,hitcount from news order by no desc) data)
+	where rnum>=#{start} and rnum<=#{end}
+]]>
+</select>
+
+<select id="selectOne" parameterType="map" resultType="com.exe.dto.NewsDTO">
+	select no,subject,content,id,created,hitcount,fileName from news where no=${no}
+</select>
+
+<select id="selectTop" resultType="com.exe.dto.NewsDTO">
+<![CDATA[
+	select no,subject,created from news
+	where rownum<=5 order by no desc
+]]>
+</select>
+
+<select id="preReadData" parameterType="map" resultType="com.exe.dto.NewsDTO">
+<![CDATA[
+   select rownum, data.* from(
+   select no, subject from news where (no>#{no}) order by no asc) data
+   where rownum=1
+]]>
+</select>
+
+<select id="nextReadData" parameterType="map" resultType="com.exe.dto.NewsDTO" >
+<![CDATA[	
+	select rownum,data.* from(
+	select no,subject from news where (no<#{no}) order by no desc)data 
+	where rownum=1 
+]]>
+</select>
+
+<delete id="deleteData" parameterType="map">
+	delete news where no=#{no}
+</delete>
+
+
+</mapper>
